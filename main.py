@@ -8,7 +8,7 @@ from aiogram.filters import CommandStart
 from aiogram.types import Message
 from aiogram.utils.markdown import hbold
 
-from buttons import menuButtons, btn1, btn2
+from buttons import menuButtons, btn1
 
 # Bot token can be obtained via https://t.me/BotFather
 TOKEN = "6748283727:AAEkNXsazg5qCLCJkMn6d1um3byKgU98R04"

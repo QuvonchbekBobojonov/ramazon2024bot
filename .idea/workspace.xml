@@ -5,37 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0f2809f4-73ac-4b29-84e8-c47908b5d93e" name="Changes" comment="first commit">
-      <change afterPath="$PROJECT_DIR$/buttons.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/001.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/002.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/003.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/004.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/005.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/006.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/007 .jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/008.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/009.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/010.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/011.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/012.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/013.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/014.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/015.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/016.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/017.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/018.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/019.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/020.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/021.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/022.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/023.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/024.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/025.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/026.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/027.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/028.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/029.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/images/xorazm/030.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
@@ -55,30 +24,30 @@
     <option name="PREVIEW_PUSH_PROTECTED_ONLY" value="true" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2cragQoq1xH4gWuBzKKGCig9WBx" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Python.main.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "/home/moorfo/PycharmProjects/ramazon2024bot/images",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/moorfo/PycharmProjects/ramazon2024bot/images&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/images" />
@@ -124,7 +93,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1708872262958</updated>
-      <workItem from="1708872269171" duration="5461000" />
+      <workItem from="1708872269171" duration="6027000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -134,7 +103,15 @@
       <option name="project" value="LOCAL" />
       <updated>1708872431432</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="first commit">
+      <option name="closed" value="true" />
+      <created>1708881406582</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1708881406582</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
