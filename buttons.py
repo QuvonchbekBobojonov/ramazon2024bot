@@ -1,6 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from context import regions
+from config import CHANNELS
 
 btn1 = '🎁 Tabrik noma tayyorlash'
 btn2 = '⏳ Taqvim ko‘rish'
@@ -50,10 +51,22 @@ designButtons = InlineKeyboardMarkup(
 )
 
 
-
 def regionsButtons():
     builder = InlineKeyboardBuilder()
     for key, value in regions:
         builder.button(text=value, callback_data=f"region_{key}")
     builder.adjust(2)
+    return builder.as_markup()
+
+
+def channelsButtons():
+    builder = InlineKeyboardBuilder()
+    i = 1
+    for channel in CHANNELS:
+        builder.button(
+            text=f"{i} - Kanal",
+            url=channel[0]
+        )
+    builder.button(text='✅ Tastiqlash', callback_data='confirm')
+    builder.adjust(1)
     return builder.as_markup()

@@ -4,7 +4,7 @@ import sys
 import os
 import datetime
 
-from environs import Env
+from aiogram.utils.chat_action import ChatActionSender
 
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.enums import ParseMode
@@ -14,23 +14,18 @@ from aiogram.utils.markdown import hbold
 from aiogram.fsm.context import FSMContext
 
 from buttons import menuButtons, btn1, btn2, designButtons, regionsButtons, taqvimButtons, back, taqvimButtonToday_text, \
-    taqvimButtonTomorrow_text
+    taqvimButtonTomorrow_text, channelsButtons
 from states import GiftState
 from images import create_image
 from models.mics import User, Taqvim
 from models.base import db
 from context import duo_text
-from service import get_taqvim
 
-env = Env()
-env.read_env()
+import config
+from utils import is_channel
 
-# Bot token can be obtained via https://t.me/BotFather
-TOKEN = env.str("BOT_TOKEN")
-
-# All handlers should be attached to the Router (or Dispatcher)
 dp = Dispatcher()
-bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
+bot = Bot(config.TOKEN, parse_mode=ParseMode.HTML)
 
 
 @dp.message(CommandStart())
@@ -44,12 +39,22 @@ async def command_start_handler(message: Message) -> None:
 
 @dp.message(F.text == btn1, StateFilter(None))
 async def one_handler(message: types.Message, state: FSMContext) -> None:
+    is_ch = await is_channel(bot, message.from_user.id, config.CHANNELS)
+    if not is_ch:
+        await message.answer("❌ Kechirasiz botimizdan foydalanishdan oldin ushbu kanallarga a'zo bo'lishingiz kerak.",
+                             reply_markup=channelsButtons())
+        return
     await message.answer("🎨 Bizda 3 xil dizayn bor, qaysini tanlaysiz?", reply_markup=designButtons)
     await state.set_state(GiftState.design)
 
 
 @dp.message(F.text == btn2, StateFilter(None))
 async def two_handler(message: types.Message) -> None:
+    is_ch = await is_channel(bot, message.from_user.id, config.CHANNELS)
+    if not is_ch:
+        await message.answer("❌ Kechirasiz botimizdan foydalanishdan oldin ushbu kanallarga a'zo bo'lishingiz kerak.",
+                             reply_markup=channelsButtons())
+        return
     user = User.get_user(message.chat.id)
     if user.region:
         await message.answer(f"📅 Taqvimni ko'rish uchun tugmalardan foydalaning.", reply_markup=taqvimButtons)
@@ -76,6 +81,17 @@ async def handler(query: CallbackQuery) -> None:
     await query.message.answer("Joylashuv qabul qilindi. Taqvimni ko'rish uchun tugmalardan foydalaning.",
                                reply_markup=taqvimButtons)
     await query.message.delete()
+
+
+@dp.callback_query(F.data == 'confirm')
+async def inline_query_handler(query: types.CallbackQuery):
+    is_ch = await is_channel(bot, query.from_user.id, config.CHANNELS)
+    if is_ch:
+        await query.message.delete()
+        await query.message.answer("🏘 Asosiy menyuga qaytib keldik.", reply_markup=menuButtons)
+    else:
+        await query.answer("❌ Kechirasiz botimizdan foydalanishdan oldin ushbu kanallarga a'zo bo'lishingiz kerak.",
+                           show_alert=True)
 
 
 @dp.message(GiftState.name, F.text)
@@ -111,8 +127,9 @@ async def taqvim_handler(message: types.Message) -> None:
     if not taqvim:
         await message.answer("📅 Taqvim hozircha mavjud emas.")
         return
-    photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
-    await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
+    async with ChatActionSender.upload_photo(bot=bot, chat_id=message.chat.id):
+        photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
+        await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
 
 
 @dp.message(F.text == taqvimButtonTomorrow_text, StateFilter(None))
@@ -123,11 +140,13 @@ async def taqvim_handler(message: types.Message) -> None:
         return
     date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
     taqvim = Taqvim.get_taqvim(user.region, date)
+
     if not taqvim:
         await message.answer("📅 Taqvim hozircha mavjud emas.")
         return
-    photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
-    await bot.send_photo(message.chat.id, photo=photo, caption=duo_text, reply_markup=menuButtons)
+    async with ChatActionSender.upload_photo(bot=bot, chat_id=message.chat.id):
+        photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
+        await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
 
 
 @dp.message(F.text == back, StateFilter(None))
