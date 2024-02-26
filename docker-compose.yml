@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  bot:
+    container_name: ramazon-bot
+    build: .
+    command: python main.py
+    volumes:
+      - .:/code
+    env_file:
+        - .env
