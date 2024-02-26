@@ -4,6 +4,8 @@ import sys
 import os
 import datetime
 
+from environs import Env
+
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart, StateFilter
@@ -20,8 +22,11 @@ from models.base import db
 from context import duo_text
 from service import get_taqvim
 
+env = Env()
+env.read_env()
+
 # Bot token can be obtained via https://t.me/BotFather
-TOKEN = "6748283727:AAEkNXsazg5qCLCJkMn6d1um3byKgU98R04"
+TOKEN = env.str("BOT_TOKEN")
 
 # All handlers should be attached to the Router (or Dispatcher)
 dp = Dispatcher()
