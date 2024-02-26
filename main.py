@@ -51,7 +51,7 @@ async def one_handler(message: types.Message, state: FSMContext) -> None:
 @dp.message(F.text == btn2, StateFilter(None))
 async def two_handler(message: types.Message) -> None:
     user = User.get_user(message.chat.id)
-    if user.region is None:
+    if user.region:
         await message.answer(f"📅 Taqvimni ko'rish uchun tugmalardan foydalaning.", reply_markup=taqvimButtons)
         return
     await message.answer("📅 Ramazon taqvimini ko'rish uchun joylashuvni tanlang:", reply_markup=regionsButtons())
@@ -127,7 +127,7 @@ async def taqvim_handler(message: types.Message) -> None:
         await message.answer("📅 Taqvim hozircha mavjud emas.")
         return
     photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
-    await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
+    await bot.send_photo(message.chat.id, photo=photo, caption=duo_text, reply_markup=menuButtons)
 
 
 @dp.message(F.text == back, StateFilter(None))
