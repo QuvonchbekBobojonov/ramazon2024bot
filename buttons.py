@@ -67,6 +67,7 @@ def channelsButtons():
             text=f"{i} - Kanal",
             url=channel[0]
         )
+        i += 1
     builder.button(text='✅ Tastiqlash', callback_data='confirm')
     builder.adjust(1)
     return builder.as_markup()
