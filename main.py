@@ -20,6 +20,7 @@ from images import create_image
 from models.mics import User, Taqvim
 from models.base import db
 from context import duo_text
+from filters import ChatTypeFilter
 
 import config
 from utils import is_channel
@@ -154,7 +155,7 @@ async def back_handler(message: types.Message) -> None:
     await message.answer("🏘 Asosiy menyuga qaytib keldik.", reply_markup=menuButtons)
 
 
-@dp.message()
+@dp.message(ChatTypeFilter("private"))
 async def not_handler(message: types.Message) -> None:
     await message.answer("🤷‍♂️ Nimadir noto‘g‘ri keti.")
 
