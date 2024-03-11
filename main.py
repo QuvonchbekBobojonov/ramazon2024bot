@@ -53,12 +53,13 @@ async def one_handler(message: types.Message, state: FSMContext) -> None:
 
 @dp.message(F.text == btn2, StateFilter(None))
 async def two_handler(message: types.Message, state: FSMContext) -> None:
+    await state.clear()
     is_ch = await is_channel(bot, message.from_user.id, config.CHANNELS)
     if not is_ch:
         await message.answer("❌ Kechirasiz botimizdan foydalanishdan oldin ushbu kanallarga a'zo bo'lishingiz kerak.",
                              reply_markup=channelsButtons())
         return
-    await message.answer("📅 Ramazon taqvimini ko'rish uchun manzilingizni yozing:")
+    await message.answer("📅 Ramazon taqvimini ko'rish uchun manzilingizni yozing:", reply_markup=types.ReplyKeyboardRemove())
     await state.set_state(states.OneState.first)
 
 
@@ -122,10 +123,12 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
     data = response.json()
     status = response.status_code
     if status == 404:
-        await message.answer("🤷‍♂️ Bunday joylashuv mavjud emas. Qaytadan urinib ko'ring.")
+        await message.answer("🤷‍♂️ Bunday joylashuv mavjud emas. Qaytadan urinib ko'ring.", reply_markup=menuButtons)
+        await state.clear()
         return
     if status != 200:
-        await message.answer("🤷‍♂️ Nimadir noto‘g‘ri keti.")
+        await message.answer("🤷‍♂️ Nimadir noto‘g‘ri keti.", reply_markup=menuButtons)
+        await state.clear()
         return
     try:
         tong_saharlik = datetime.datetime.strptime(data['times']['tong_saharlik'], "%H:%M")
@@ -136,10 +139,12 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
         await state.clear()
 
     except KeyError:
-        await message.answer("❌ Xatolik yuz berdi. Qaytadan urinib ko'ring.")
+        await message.answer("❌ Xatolik yuz berdi. Qaytadan urinib ko'ring.", reply_markup=menuButtons)
+        await state.clear()
 
     except Exception as e:
-        await message.answer(f"❌ Xatolik yuz berdi: {e}")
+        await message.answer(f"❌ Xatolik yuz berdi: {e}", reply_markup=menuButtons)
+        await state.clear()
 
 
 @dp.message(F.text == back, StateFilter(None))
