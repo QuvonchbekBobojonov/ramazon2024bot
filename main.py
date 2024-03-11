@@ -121,8 +121,6 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
     response = requests.get(f"https://islomapi.uz/api/present/day?region={message.text}")
     data = response.json()
     status = response.status_code
-    tong_saharlik = datetime.datetime.strptime(data['times']['tong_saharlik'], "%H:%M")
-    shom_iftor = datetime.datetime.strptime(data['times']['shom_iftor'], "%H:%M")
     if status == 404:
         await message.answer("🤷‍♂️ Bunday joylashuv mavjud emas. Qaytadan urinib ko'ring.")
         return
@@ -130,6 +128,8 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
         await message.answer("🤷‍♂️ Nimadir noto‘g‘ri keti.")
         return
     try:
+        tong_saharlik = datetime.datetime.strptime(data['times']['tong_saharlik'], "%H:%M")
+        shom_iftor = datetime.datetime.strptime(data['times']['shom_iftor'], "%H:%M")
         await message.answer(
             f"Mintaqa: {data['region']} \nSahar va Iftar vaqtlari: \n\n🌙 Sahar: {tong_saharlik.time()} \n🌙 Iftar: {shom_iftor.time()} \n\n📅 Bugungi sanasi: {data['date']} \n\n {duo_text}",
             reply_markup=menuButtons)
