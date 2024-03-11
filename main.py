@@ -121,8 +121,8 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
     response = requests.get(f"https://islomapi.uz/api/present/day?region={message.text}")
     data = response.json()
     status = response.status_code
-    tong_saharlik = datetime.datetime.strptime(data['times']['tong_saharlik'], "%H:%M") - datetime.timedelta(minutes=3)
-    shom_iftor = datetime.datetime.strptime(data['times']['shom_iftor'], "%H:%M") - datetime.timedelta(minutes=3)
+    tong_saharlik = datetime.datetime.strptime(data['times']['tong_saharlik'], "%H:%M")
+    shom_iftor = datetime.datetime.strptime(data['times']['shom_iftor'], "%H:%M")
     if status == 404:
         await message.answer("🤷‍♂️ Bunday joylashuv mavjud emas. Qaytadan urinib ko'ring.")
         return
