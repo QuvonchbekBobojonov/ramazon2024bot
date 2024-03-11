@@ -117,7 +117,7 @@ async def handler(message: types.Message, state: FSMContext) -> None:
 
 
 @dp.message(F.text, states.OneState.first)
-async def taqvim_handler(message: types.Message) -> None:
+async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
     response = requests.get(f"https://islomapi.uz/api/present/day?region={message.text}")
     data = response.json()
     status = response.status_code
@@ -127,7 +127,7 @@ async def taqvim_handler(message: types.Message) -> None:
     await message.answer(
         f"Mintaqa: {data['region']} \nSahar va Iftar vaqtlari: \n\n🌙 Sahar: {data['times']['tong_saharlik']} \n🌙 Iftar: {data['times']['shom_iftor']} \n\n📅 Bugungi sanasi: {data['date']} \n\n {duo_text}",
         reply_markup=menuButtons)
-    await states.clear()
+    await state.clear()
 
 
 @dp.message(F.text == back, StateFilter(None))
