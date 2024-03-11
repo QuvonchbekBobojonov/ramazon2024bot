@@ -3,6 +3,7 @@ import logging
 import sys
 import os
 import datetime
+import requests
 
 from aiogram.utils.chat_action import ChatActionSender
 
@@ -13,6 +14,7 @@ from aiogram.types import Message, CallbackQuery
 from aiogram.utils.markdown import hbold
 from aiogram.fsm.context import FSMContext
 
+import states
 from buttons import menuButtons, btn1, btn2, designButtons, regionsButtons, taqvimButtons, back, taqvimButtonToday_text, \
     taqvimButtonTomorrow_text, channelsButtons
 from states import GiftState
@@ -50,17 +52,14 @@ async def one_handler(message: types.Message, state: FSMContext) -> None:
 
 
 @dp.message(F.text == btn2, StateFilter(None))
-async def two_handler(message: types.Message) -> None:
+async def two_handler(message: types.Message, state: FSMContext) -> None:
     is_ch = await is_channel(bot, message.from_user.id, config.CHANNELS)
     if not is_ch:
         await message.answer("❌ Kechirasiz botimizdan foydalanishdan oldin ushbu kanallarga a'zo bo'lishingiz kerak.",
                              reply_markup=channelsButtons())
         return
-    user = User.get_user(message.chat.id)
-    if user.region:
-        await message.answer(f"📅 Taqvimni ko'rish uchun tugmalardan foydalaning.", reply_markup=taqvimButtons)
-        return
-    await message.answer("📅 Ramazon taqvimini ko'rish uchun joylashuvni tanlang:", reply_markup=regionsButtons())
+    await message.answer("📅 Ramazon taqvimini ko'rish uchun manzilingizni yozing:")
+    await state.set_state(states.OneState.first)
 
 
 @dp.callback_query(F.data.startswith('design_'), GiftState.design)
@@ -117,37 +116,18 @@ async def handler(message: types.Message, state: FSMContext) -> None:
     os.remove(f"{data['name']}.jpg")
 
 
-@dp.message(F.text == taqvimButtonToday_text, StateFilter(None))
+@dp.message(F.text, states.OneState.first)
 async def taqvim_handler(message: types.Message) -> None:
-    user = User.get_user(message.chat.id)
-    if not user.region:
-        await message.answer("🤷‍♂️ Sizda joylashuvni tanlamaganmisiz? Qaytadan tanlang:", reply_markup=regionsButtons())
+    response = requests.get(f"https://islomapi.uz/api/present/day?region={message.text}")
+    data = response.json()
+    status = response.status_code
+    if status == 404:
+        await message.answer("🤷‍♂️ Bunday joylashuv mavjud emas. Qaytadan urinib ko'ring.")
         return
-    date = datetime.datetime.now().strftime("%Y-%m-%d")
-    taqvim = Taqvim.get_or_none((Taqvim.region.contains(user.region)) & (Taqvim.date == date))
-    if not taqvim:
-        await message.answer("📅 Taqvim hozircha mavjud emas.")
-        return
-    async with ChatActionSender.upload_photo(bot=bot, chat_id=message.chat.id):
-        photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
-        await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
-
-
-@dp.message(F.text == taqvimButtonTomorrow_text, StateFilter(None))
-async def taqvim_handler(message: types.Message) -> None:
-    user = User.get_user(message.chat.id)
-    if not user.region:
-        await message.answer("🤷‍♂️ Sizda joylashuvni tanlamaganmisiz? Qaytadan tanlang:", reply_markup=regionsButtons())
-        return
-    date = (datetime.datetime.now() + datetime.timedelta(days=1)).strftime("%Y-%m-%d")
-    taqvim = Taqvim.get_taqvim(user.region, date)
-
-    if not taqvim:
-        await message.answer("📅 Taqvim hozircha mavjud emas.")
-        return
-    async with ChatActionSender.upload_photo(bot=bot, chat_id=message.chat.id):
-        photo = types.FSInputFile(f"images/{user.region}/{taqvim.img}")
-        await message.answer_photo(photo=photo, caption=duo_text, reply_markup=menuButtons)
+    await message.answer(
+        f"Mintaqa: {data['region']} \nSahar va Iftar vaqtlari: \n\n🌙 Sahar: {data['times']['tong_saharlik']} \n🌙 Iftar: {data['times']['shom_iftor']} \n\n📅 Bugungi sanasi: {data['date']} \n\n {duo_text}",
+        reply_markup=menuButtons)
+    await states.clear()
 
 
 @dp.message(F.text == back, StateFilter(None))

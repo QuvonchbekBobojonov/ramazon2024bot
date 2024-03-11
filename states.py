@@ -6,3 +6,6 @@ class GiftState(StatesGroup):
     name = State()
     author = State()
 
+
+class OneState(StatesGroup):
+    first = State()
