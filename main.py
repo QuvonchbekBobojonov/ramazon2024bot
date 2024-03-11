@@ -129,10 +129,17 @@ async def taqvim_handler(message: types.Message, state: FSMContext) -> None:
     if status != 200:
         await message.answer("🤷‍♂️ Nimadir noto‘g‘ri keti.")
         return
-    await message.answer(
-        f"Mintaqa: {data['region']} \nSahar va Iftar vaqtlari: \n\n🌙 Sahar: {tong_saharlik.time()} \n🌙 Iftar: {shom_iftor.time()} \n\n📅 Bugungi sanasi: {data['date']} \n\n {duo_text}",
-        reply_markup=menuButtons)
-    await state.clear()
+    try:
+        await message.answer(
+            f"Mintaqa: {data['region']} \nSahar va Iftar vaqtlari: \n\n🌙 Sahar: {tong_saharlik.time()} \n🌙 Iftar: {shom_iftor.time()} \n\n📅 Bugungi sanasi: {data['date']} \n\n {duo_text}",
+            reply_markup=menuButtons)
+        await state.clear()
+
+    except KeyError:
+        await message.answer("❌ Xatolik yuz berdi. Qaytadan urinib ko'ring.")
+
+    except Exception as e:
+        await message.answer(f"❌ Xatolik yuz berdi: {e}")
 
 
 @dp.message(F.text == back, StateFilter(None))
